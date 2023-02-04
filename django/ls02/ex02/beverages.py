@@ -45,12 +45,9 @@ class Cappuccino(HotBeverage):
 	def description(self) -> str:
 		return "Un po' di Italia nella sua tazza!"
 
-
-
-
 def print_beverage():
 
-	print(HotBeverage(), '\n').
+	print(HotBeverage(), '\n')
 	print(Coffee(), '\n')
 	print(Tea(), '\n')
 	print(Chocolate(), '\n')

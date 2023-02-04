@@ -7,11 +7,11 @@ class Intern:
         def __str__(self) -> str:
             return "This is the worst coffee you ever tasted"
 
-    def __init__(self, Name=None):
-        self.Name = "My name? I'm nobody, an intern, I have no name" if Name is None else Name
+    def __init__(self, name=None):
+        self.name = "My name? I'm nobody, an intern, I have no name" if name is None else name
 
     def __str__(self) -> str:
-        return self.Name
+        return self.name
 
     def work(self) -> str:
         raise Exception("I'm just an intern, I can't do that")
