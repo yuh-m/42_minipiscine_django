@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # coding: utf-8
 
+
 class Text(str):
     """
     A Text class to represent a text you could use with your HTML elements.
@@ -12,24 +13,34 @@ class Text(str):
         """
         Do you really need a comment to understand this method?..
         """
-        return super().__str__().replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace('\n', '\n<br />\n')
+        return (
+            super()
+            .__str__()
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace('"', "&quot;")
+            .replace("\n", "\n<br />\n")
+        )
 
 
 class Elem:
     """
     Elem will permit us to represent our HTML elements.
     """
+
     class ValidationError(Exception):
         def __init__(self) -> None:
             super().__init__("Invalid type")
 
-    def __init__(self, tag='div', attr={}, content=None, tag_type='double'):
+    def __init__(self, tag="div", attr={}, content=None, tag_type="double"):
         """
         __init__() method.
 
         Obviously.
         """
-        if (not (self.check_type(content) or content is None)) or (tag_type != 'double' and tag_type != 'simple'):
+        if (not (self.check_type(content) or content is None)) or (
+            tag_type != "double" and tag_type != "simple"
+        ):
             raise self.ValidationError
         self.tag = tag
         self.attr = attr
@@ -50,11 +61,11 @@ class Elem:
 
         attribute = self.__make_attr()
         content = self.__make_content()
-        result = f'<{self.tag}{attribute}'
+        result = f"<{self.tag}{attribute}"
 
-        if self.tag_type == 'double':
-            result = result + f'>{content}</{self.tag}>'
-        elif self.tag_type == 'simple':
+        if self.tag_type == "double":
+            result = result + f">{content}</{self.tag}>"
+        elif self.tag_type == "simple":
             result = result + " />"
         return result
 
@@ -62,9 +73,9 @@ class Elem:
         """
         Here is a function to render our elements attributes.
         """
-        result = ''
+        result = ""
         for dic in sorted(self.attr.items()):
-            result += ' ' + str(dic[0]) + '="' + str(dic[1]) + '"'
+            result += " " + str(dic[0]) + '="' + str(dic[1]) + '"'
         return result
 
     def __make_content(self):
@@ -73,22 +84,22 @@ class Elem:
         """
 
         if len(self.content) == 0:
-            return ''
-        result = '\n'
+            return ""
+        result = "\n"
         for elem in self.content:
-            if (len(str(elem)) != 0):
+            if len(str(elem)) != 0:
                 result += f"{elem}\n"
         result = "  ".join(line for line in result.splitlines(True))
         if len(result.strip()) == 0:
-            return ''
+            return ""
         return result
 
     def add_content(self, content):
         if not Elem.check_type(content):
             raise Elem.ValidationError
         if type(content) == list:
-            self.content += [elem for elem in content if elem != Text('')]
-        elif content != Text(''):
+            self.content += [elem for elem in content if elem != Text("")]
+        elif content != Text(""):
             self.content.append(content)
 
     @staticmethod
@@ -97,24 +108,37 @@ class Elem:
         Is this object a HTML-compatible Text instance or a Elem, or even a
         list of both?
         """
-        return (isinstance(content, Elem) or type(content) == Text or
-                (type(content) == list and all([type(elem) == Text or
-                                                isinstance(elem, Elem)
-                                                for elem in content])))
+        return (
+            isinstance(content, Elem)
+            or type(content) == Text
+            or (
+                type(content) == list
+                and all(
+                    [type(elem) == Text or isinstance(elem, Elem) for elem in content]
+                )
+            )
+        )
 
 
 def test():
     title = Text('"Hello ground!"')
     header1 = Text('"Oh no, not again!"')
-    img_src = {'src':"http://i.imgur.com/pfp3T.jpg"}
-    html = Elem('html', content=[
-                Elem('head', content=
-                    Elem('title', content=[title])),
-                Elem('body', content=[
-                    Elem('h1', content=[header1]),
-                    Elem('img',img_src, tag_type='simple')])])
+    img_src = {"src": "http://i.imgur.com/pfp3T.jpg"}
+    html = Elem(
+        "html",
+        content=[
+            Elem("head", content=Elem("title", content=[title])),
+            Elem(
+                "body",
+                content=[
+                    Elem("h1", content=[header1]),
+                    Elem("img", img_src, tag_type="simple"),
+                ],
+            ),
+        ],
+    )
     print(html)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test()
