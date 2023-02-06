@@ -61,12 +61,14 @@ class Elem:
 
         attribute = self.__make_attr()
         content = self.__make_content()
-        result = f"<{self.tag}{attribute}"
 
         if self.tag_type == "double":
-            result = result + f">{content}</{self.tag}>"
+            if attribute == "":
+                result = f"<{self.tag}>{content}</{self.tag}>"
+            else:
+                result = f"<{self.tag} style={{{attribute}}}>{content}</{self.tag}>"
         elif self.tag_type == "simple":
-            result = result + " />"
+            result = f"<{self.tag} {attribute} />"
         return result
 
     def __make_attr(self):
