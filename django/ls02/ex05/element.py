@@ -151,7 +151,7 @@ def test_elements():
 
 def test():
     test_elements()
-    #test_html()
+    test_html()
 
 if __name__ == "__main__":
     test()
